@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Servidor sencillo con Express para guardar y mostrar usuarios",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
