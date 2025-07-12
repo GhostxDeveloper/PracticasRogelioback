@@ -1,0 +1,62 @@
+Hacer el despliegue de una aplicación en Google cloud 
+
+
+Crear el archivo Docker File 
+
+Crear el archivo requeriments.txt (puede cambiar dependiendo del Docker file)
+
+
+Crear el archivo a desplegar , extencion que sea .py, .js etc
+
+
+Verificar con que cuenta estoy logueado 
+** gcloud auth list
+
+Cambiar de cuenta o loguearme en otra 
+**gcloud auth login
+
+
+ Verificar proyecto actual
+**gcloud config get-value Project
+
+Si no es el correcto , cambiar 
+**gcloud config set project practicabackendrogcristian 
+
+Listar los proyectos disponibles en Google cloud 
+**gcloud projects list
+
+Listar las biilling acounts disponibles para el proyecto 
+**gcloud billing accounts list
+
+ Vincular billing account al proyecto
+
+gcloud billing projects link (nombre del proyecto a vincular) --billing-account=(ACCOUNT_ID a utilizar dependiendo de que cuenta de 
+facturación tengas disponible)
+
+
+Verificar que se vinculara correctamente 
+** gcloud billing projects describe (nombre del proyecto)
+
+# Habilitar Container Registry API
+gcloud services enable containerregistry.googleapis.com
+
+# Habilitar Artifact Registry API (necesario para gcr.io)
+gcloud services enable artifactregistry.googleapis.com
+
+
+# Verificar APIs habilitadas
+gcloud services list --enabled | findstr "container"
+gcloud services list --enabled | findstr "artifact"
+
+
+# 1. Construir la imagen desde tu código
+docker build -t gcr.io/[ID_PROYECTO]/[NOMBRE_IMAGEN]:[VERSION] .
+
+# 2. Subir la imagen a Google Container Registry
+docker push gcr.io/[ID_PROYECTO]/[NOMBRE_IMAGEN]:[VERSION]
+
+# 3. Hacer deploy desde Container Registry
+gcloud run deploy [NOMBRE_SERVICIO] \
+  --image gcr.io/[ID_PROYECTO]/[NOMBRE_IMAGEN]:[VERSION] \
+  --region [REGION] \
+  --allow-unauthenticated
